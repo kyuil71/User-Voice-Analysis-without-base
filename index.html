@@ -41,7 +41,7 @@
         const SESSION_KEY = "gemini_api_key_ux_hub_integrated";
 
         const StepTitle = ({ title, desc }) => (
-            <div className="mb-8 pt-2 animate-fade-in break-keep">
+            <div className="mb-8 pt-2 animate-fade-in">
                 <h2 className="text-[32px] font-black text-slate-900 leading-[1.3] mb-3 whitespace-pre-line tracking-tight">{title}</h2>
                 <p className="text-blue-600 font-bold text-[15px] tracking-tight break-keep">{desc}</p>
             </div>
@@ -53,7 +53,7 @@
                 return `Data: "${numberedData}"\n${note ? `[사용자 수정 요청]: ${note}` : ""}\n데이터를 분석하여 전체 요약(EXECUTIVE SUMMARY)과 5~7개의 핵심 카테고리 이름을 도출하십시오. 분석 요약(summary)은 대학생이 쉽게 이해할 수 있는 평이하고 명확한 어휘를 사용하여 한국어로 작성하십시오. 답변 내에 ** 강조 표시를 절대로 포함하지 마십시오.\n[중요1]: "summary"의 내용은 반드시 4줄에서 5줄 분량으로만 작성하십시오.\n[중요2]: 불필요한 설명 없이 즉시 JSON만 출력하십시오.\nProvide JSON: {"summary": "EXECUTIVE SUMMARY", "categoryNames": ["카테고리1", "카테고리2"]}`;
             },
             STEP1_DETAIL: (data, categoryName) => {
-                return `Data: "${data}"\nCategory: "${categoryName}"\n해당 카테고리에 대한 분석 요약을 도출하십시오. 요약은 대학생이 쉽게 이해할 수 있는 평이하고 명확한 수준으로 한국어로 작성하며 ** 강조 표시는 절대 금지합니다.\n[중요1]: "summary" 분석 내용은 반드시 4줄에서 5줄 분량으로만 작성하십시오.\n[중요2]: 불필요한 설명 없이 즉시 JSON만 출력하십시오.\nProvide JSON: {"summary": "분석 내용"}`;
+                return `Data: "${data}"\nCategory: "${categoryName}"\n이 데이터들을 바탕으로 해당 카테고리에 대한 심층 분석 요약을 작성하십시오. 요약은 대학생이 쉽게 이해할 수 있는 평이하고 명확한 수준으로 한국어로 작성하며 ** 강조 표시는 절대 금지합니다.\n[중요1]: "summary" 분석 내용은 반드시 4줄에서 5줄 분량으로만 작성하십시오.\n[중요2]: 불필요한 설명 없이 즉시 JSON만 출력하십시오.\nProvide JSON: {"summary": "분석 내용"}`;
             },
             
             STEP2_PLAN: (data, note) => {
@@ -61,21 +61,21 @@
                 return `Data: "${numberedData}"\n${note ? `[사용자 수정 요청]: ${note}` : ""}\n디자인 및 UX 측면에서 정교하게 세분화된 카테고라이징을 수행하여, 전체 요약(UX/DESIGN SUMMARY)과 이슈 이름들을 도출하십시오. 분석 요약은 대학생이 쉽게 이해할 수 있는 평이하고 명확한 어휘를 사용하여 한국어로 작성하며 ** 강조 표시는 금지합니다.\n[중요1]: "summary"의 내용은 반드시 4줄에서 5줄 분량으로만 작성하십시오.\n[중요2]: 불필요한 설명 없이 즉시 JSON만 출력하십시오.\nProvide JSON: {"summary": "UX/DESIGN SUMMARY", "categoryNames": ["이슈1", "이슈2"]}`;
             },
             STEP2_DETAIL: (data, categoryName) => {
-                return `Data: "${data}"\nCategory: "${categoryName}"\n해당 UX/디자인 이슈에 대한 분석 요약을 도출하십시오. 요약은 대학생이 쉽게 이해할 수 있는 평이하고 명확한 수준으로 한국어로 작성하며 ** 강조 표시는 절대 금지합니다.\n[중요1]: "summary" 분석 내용은 반드시 4줄에서 5줄 분량으로만 작성하십시오.\n[중요2]: 불필요한 설명 없이 즉시 JSON만 출력하십시오.\nProvide JSON: {"summary": "분석 내용"}`;
+                return `Data: "${data}"\nCategory: "${categoryName}"\n이 데이터들을 바탕으로 해당 이슈에 대한 심층 분석 요약을 작성하십시오. 요약은 대학생이 쉽게 이해할 수 있는 평이하고 명확한 수준으로 한국어로 작성하며 ** 강조 표시는 절대 금지합니다.\n[중요1]: "summary" 분석 내용은 반드시 4줄에서 5줄 분량으로만 작성하십시오.\n[중요2]: 불필요한 설명 없이 즉시 JSON만 출력하십시오.\nProvide JSON: {"summary": "분석 내용"}`;
             },
 
             ANALYSIS: (perspective, input, note) => `You are a Senior Root Cause Analyst. Strictly lens: [${perspective}]. \n${note ? `[Revision Request]: ${note}` : ""}\nDerivate 3 to 6 distinct 5Why chains. Format: Why [N]\\n왜 [질문]?\\n→ [답변]\\n핵심: [대학생이 쉽게 이해할 수 있는 명확한 요약].\n[중요]: 오직 JSON 형식으로만 즉시 출력하십시오.\nReturn ONLY a JSON: { "rootCauses": [ { "id": 1, "chain": ["Why 1\\\\n왜...\\\\n→...\\\\n핵심:...","Why 2...","Why 3...","Why 4...","Why 5..."], "realCause": "..." } ] }`,
             
-            HYPOTHESIS: (perspective, input, cause, note) => `# Role: 전문 UX 전략 컨설턴트. # Context: 도출된 '5Why 진짜 원인'과 선택된 [${perspective}]을 바탕으로 확장 가설 제시. \n${note ? `[수정 요청 반영]: ${note}` : ""}\n[중요1]: 반드시 [${perspective}]에 철저히 입각하여, 이 관점만의 독특하고 차별화된 전략적 해결책을 도출해야 합니다.\n[중요2]: 반드시 정확히 2개의 제안(가설)만 생성하십시오.\n[중요3]: Step 1(VOC 기반 이슈), Step 2(디자인 솔루션 제안), Step 3(사용자 가치 및 기대 효과) 각각의 내용은 반드시 3~4줄 분량으로, 대학생이 쉽게 이해할 수 있는 평이하고 명확한 수준으로 매우 깊이 있고 풍부한 인사이트가 담기도록 상세하게 작성하십시오.\n[중요4]: 특히 'Step 1. VOC 기반 이슈'의 내용은 반드시 사용자 인터뷰를 통해 발견한 실제 Voice(목소리)를 직접 인용하거나 구체적으로 언급하며, 생생하고 실질적인 현장 내용이 들어가는 것처럼 실감나게 작성해야 합니다.\n[중요5]: 'Step 4. 전략적 해결 방안'은 실행(action) 중심의 실용적이고 현실 가능한 전략이어야 하며, 글머리 기호(- 등)와 줄바꿈(\\n)을 활용한 마크다운 형식으로 4~5줄 분량으로 명확하고 보기 좋게 정리해 주십시오.\n[중요6]: 응답 속도 최적화를 위해 오직 JSON 형식으로만 즉시 출력하십시오.\nReturn ONLY a JSON: { "hypotheses": [ { "id": 1, "title": "...", "step1": "...", "step2": "...", "step3": "...", "step4": "..." }, { "id": 2, "title": "...", "step1": "...", "step2": "...", "step3": "...", "step4": "..." } ] }`
+            HYPOTHESIS: (perspective, input, cause, note) => `# Role: 전문 UX 전략 컨설턴트. # Context: 도출된 '5Why 진짜 원인'과 선택된 [${perspective}]을 바탕으로 확장 가설 제시. \n${note ? `[수정 요청 반영]: ${note}` : ""}\n[중요1]: 반드시 [${perspective}]에 철저히 입각하여, 이 관점만의 독특하고 차별화된 전략적 해결책을 도출해야 합니다.\n[중요2]: 반드시 정확히 2개의 제안(가설)만 생성하십시오.\n[중요3]: Step 1(VOC 기반 이슈), Step 2(디자인 솔루션 제안), Step 3(사용자 가치 및 기대 효과) 각각의 내용은 반드시 3~4줄 분량으로, 대학생이 쉽게 이해할 수 있는 평이하고 명확한 수준으로 매우 깊이 있고 풍부한 인사이트가 담기도록 상세하게 작성하십시오.\n[중요4]: 특히 'Step 1. VOC 기반 이슈'의 내용은 반드시 사용자 인터뷰를 통해 발견한 실제 Voice(목소리)를 직접 인용하거나 구체적으로 언급하며, 생생하고 실질적인 현장 내용이 들어가는 것처럼 실감나게 작성해야 합니다.\n[중요5]: 'Step 4. 전략적 해결 방안'은 실행(action) 중심의 실용적이고 현실 가능한 전략이어야 연습하며, 글머리 기호(- 등)와 줄바꿈(\\n)을 활용한 마크다운 형식으로 4~5줄 분량으로 명확하고 보기 좋게 정리해 주십시오.\n[중요6]: 응답 속도 최적화를 위해 오직 JSON 형식으로만 즉시 출력하십시오.\nReturn ONLY a JSON: { "hypotheses": [ { "id": 1, "title": "...", "step1": "...", "step2": "...", "step3": "...", "step4": "..." }, { "id": 2, "title": "...", "step1": "...", "step2": "...", "step3": "...", "step4": "..." } ] }`
         };
 
         const AIQuestionBox = ({ qaInput, setQaInput, askAI }) => (
             <div className="p-6 bg-slate-800 rounded-[2rem] shadow-xl space-y-4 my-8 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="flex items-center gap-2 text-white relative z-10">
-                    <Icon name="MessageSquare" size={18} className="text-blue-400 shrink-0" />
-                    <span className="font-bold uppercase tracking-widest text-[15px] opacity-90 whitespace-nowrap break-keep">AI에게 수정 요청하기</span>
-                    <button onClick={() => askAI(qaInput)} className="bg-blue-600 hover:bg-blue-500 text-white p-2.5 rounded-xl ml-auto active:scale-95 transition-all shadow-lg shadow-blue-600/30 shrink-0">
+                    <Icon name="MessageSquare" size={18} className="text-blue-400" />
+                    <span className="font-bold uppercase tracking-widest text-[15px] opacity-90">AI에게 수정 요청하기</span>
+                    <button onClick={() => askAI(qaInput)} className="bg-blue-600 hover:bg-blue-500 text-white p-2.5 rounded-xl ml-auto active:scale-95 transition-all shadow-lg shadow-blue-600/30">
                         <Icon name="Send" size={18} />
                     </button>
                 </div>
@@ -109,21 +109,21 @@
                                 <Icon name="ChevronLeft" size={20} />
                             </button>
                         ) : <div className="w-7 shrink-0"></div>}
-                        <h1 className="font-bold text-[16px] text-slate-800 tracking-tight truncate pb-0.5 whitespace-nowrap">{getDynamicTitle()}</h1>
+                        <h1 className="font-bold text-[16px] text-slate-800 tracking-tight truncate pb-0.5">{getDynamicTitle()}</h1>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                         {canGoForward && (
-                            <button onClick={() => setStep(s => s + 1)} className="p-1 text-slate-700 transition-colors active:scale-95 shrink-0" title="앞으로 가기">
+                            <button onClick={() => setStep(s => s + 1)} className="p-1 text-slate-700 transition-colors active:scale-95" title="앞으로 가기">
                                 <Icon name="ChevronRight" size={20} />
                             </button>
                         )}
-                        <button onClick={copyAccumulatedContent} className="p-1 text-slate-700 transition-colors active:scale-95 shrink-0" title="리포트 복사">
+                        <button onClick={copyAccumulatedContent} className="p-1 text-slate-700 transition-colors active:scale-95" title="리포트 복사">
                             <Icon name="Copy" size={20} />
                         </button>
-                        <button onClick={resetAll} className="p-1 text-slate-700 transition-colors active:scale-95 shrink-0" title="데이터 입력 화면으로">
+                        <button onClick={() => setStep(1)} className="p-1 text-slate-700 transition-colors active:scale-95" title="데이터 입력 화면으로">
                             <Icon name="Home" size={20} />
                         </button>
-                        <button onClick={exportProject} className="p-1 -mr-1 text-slate-700 transition-colors active:scale-95 shrink-0" title="프로젝트 수동 저장">
+                        <button onClick={exportProject} className="p-1 -mr-1 text-slate-700 transition-colors active:scale-95" title="프로젝트 수동 저장">
                             <Icon name="Download" size={20} />
                         </button>
                     </div>
@@ -446,11 +446,12 @@
                 try {
                     const planRes = await callGemini(PROMPTS.STEP1_PLAN(rawData, note), true, null, false);
                     if (!planRes || !planRes.categoryNames) throw new Error("분석 플랜 생성 실패");
-                    const detailPromises = planRes.categoryNames.map(async (catName) => {
+                    
+                    const categories = [];
+                    for (const catName of planRes.categoryNames) {
                         const detailRes = await callGemini(PROMPTS.STEP1_DETAIL(rawData, catName), true, null, false);
-                        return { name: catName, summary: detailRes.summary };
-                    });
-                    const categories = await Promise.all(detailPromises);
+                        categories.push({ name: catName, summary: detailRes.summary });
+                    }
                     setStep1Result({ summary: planRes.summary, categories }); 
                     setStep(2);
                 } catch { setError("분석 실패. 데이터 형식을 확인해 주세요."); }
@@ -463,11 +464,12 @@
                 try {
                     const planRes = await callGemini(PROMPTS.STEP2_PLAN(rawData, note), true, null, false);
                     if (!planRes || !planRes.categoryNames) throw new Error("분석 플랜 생성 실패");
-                    const detailPromises = planRes.categoryNames.map(async (catName) => {
+                    
+                    const uxCategories = [];
+                    for (const catName of planRes.categoryNames) {
                         const detailRes = await callGemini(PROMPTS.STEP2_DETAIL(rawData, catName), true, null, false);
-                        return { name: catName, summary: detailRes.summary };
-                    });
-                    const uxCategories = await Promise.all(detailPromises);
+                        uxCategories.push({ name: catName, summary: detailRes.summary });
+                    }
                     setStep2Result({ summary: planRes.summary, uxCategories }); 
                     setStep(3);
                 } catch { setError("분석 실패. 데이터 형식을 확인해 주세요."); }
@@ -569,7 +571,7 @@
                     {isAnalyzing && (
                         <div className="fixed inset-0 z-[10000] bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center max-w-[430px] mx-auto">
                             <div className="w-14 h-14 rounded-full border-4 border-slate-100 border-t-blue-600 animate-spin mb-6"></div>
-                            <h3 className="text-[20px] font-black text-[#0f172a] tracking-tight whitespace-nowrap break-keep">AI 분석 중</h3>
+                            <h3 className="text-[20px] font-black text-[#0f172a] tracking-tight">분석 중</h3>
                         </div>
                     )}
 
@@ -577,8 +579,8 @@
                         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/40 p-6 backdrop-blur-sm">
                             <div className="bg-white p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl border border-slate-100">
                                 <Icon name="AlertCircle" size={32} className="text-red-500 mx-auto mb-5" />
-                                <p className="text-slate-700 mb-8 font-bold break-keep">{error}</p>
-                                <button onClick={() => setError(null)} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold whitespace-nowrap break-keep">확인</button>
+                                <p className="text-slate-700 mb-8 font-bold">{error}</p>
+                                <button onClick={() => setError(null)} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold">확인</button>
                             </div>
                         </div>
                     )}
@@ -591,15 +593,15 @@
                         {step === 0 && (
                             <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-b from-[#e0f2fe] via-white to-[#e0f2fe] text-center animate-fade-in">
                                 <div className="w-full mb-10 px-2 mt-[-10vh]">
-                                    <h1 className="font-black tracking-tight text-[#0f172a] leading-[1.2] text-[36px] mb-4 break-keep">User Voice Analysis<br/>& Insight</h1>
-                                    <p className="text-slate-500 font-bold text-[16px] break-keep">사용자 리뷰 데이터 분석 자동화 도구</p>
+                                    <h1 className="font-black tracking-tight text-[#0f172a] leading-[1.2] text-[36px] mb-4">User Voice Analysis<br/>& Insight</h1>
+                                    <p className="text-slate-500 font-bold text-[16px]">사용자 리뷰 데이터 분석 자동화 도구</p>
                                 </div>
                                 <div className="w-full bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-6">
-                                    <div className="flex justify-end w-full mb-2">
-                                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-blue-600 font-bold text-[15px] hover:text-blue-700 transition-colors whitespace-nowrap break-keep">API Key 발급받기</a>
+                                    <div>
+                                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-blue-600 font-bold text-[15px] hover:text-blue-700 transition-colors">API Key 발급받기</a>
                                     </div>
                                     <input type="password" id="api-key-input" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-center outline-none focus:border-blue-400 transition-colors text-[15px] font-medium text-slate-700 placeholder:text-slate-400" placeholder="Gemini API Key 입력" />
-                                    <button onClick={() => validateKey(document.getElementById('api-key-input').value)} className="w-full py-4 bg-[#0f172a] hover:bg-slate-800 text-white rounded-xl font-black text-[16px] shadow-lg active:scale-95 transition-all whitespace-nowrap break-keep">시작하기</button>
+                                    <button onClick={() => validateKey(document.getElementById('api-key-input').value)} className="w-full py-4 bg-[#0f172a] hover:bg-slate-800 text-white rounded-xl font-black text-[16px] shadow-lg active:scale-95 transition-all">시작하기</button>
                                 </div>
                             </div>
                         )}
@@ -609,27 +611,27 @@
                                 <div className="absolute top-[-10%] left-[-20%] w-[140%] h-[70%] bg-gradient-to-br from-indigo-600/30 to-blue-500/20 rounded-full blur-[100px] pointer-events-none"></div>
                                 <div className="relative z-10 space-y-12">
                                     <div className="space-y-6">
-                                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 font-bold uppercase tracking-widest text-[14px] backdrop-blur-sm whitespace-nowrap break-keep">INTEGRATED INTELLIGENCE</div>
-                                        <h1 className="font-black leading-tight tracking-tighter text-42px break-keep">데이터 기반으로<br/>사용자 마음을<br/><span className="text-blue-400 text-45px break-keep">발견하세요.</span></h1>
-                                        <p className="text-slate-400 leading-relaxed text-[17px] font-light break-keep">Raw 데이터 분석에서 5Whys 진짜 원인 파악까지 한번에 진행하는 올인원 도구입니다.</p>
+                                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 font-bold uppercase tracking-widest text-[14px] backdrop-blur-sm">INTEGRATED INTELLIGENCE</div>
+                                        <h1 className="font-black leading-tight tracking-tighter text-[42px]">데이터 기반으로<br/>사용자 마음을<br/><span className="text-blue-400 text-[45px]">발견하세요.</span></h1>
+                                        <p className="text-slate-400 leading-relaxed text-[17px] font-light">Raw 데이터 분석에서 5Whys 진짜 원인 파악까지 한번에 진행하는 올인원 도구입니다.</p>
                                     </div>
                                     <div className="space-y-5">
                                         <div>
                                             <textarea rows={5} value={rawData} onChange={(e) => updateDataAndCount(e.target.value)} className="w-full bg-[#1e293b] border border-slate-500 focus:border-blue-400 rounded-[2rem] p-7 text-white outline-none text-[16px] resize-none leading-relaxed transition-colors shadow-inner" placeholder="수집한 User Voice 데이터를 입력하거나 업로드 하세요"></textarea>
                                             {itemCount > 0 ? (
-                                                <p className="text-right text-blue-400 font-bold text-[15px] mt-3 pr-3 animate-fade-in tracking-wide break-keep">
-                                                    ✓ 분석 반영 데이터: <span className="text-white">{itemCount}</span>개 {itemCount >= 500 ? <span className="text-orange-400 ml-1 break-keep">(최대 한도 500개 적용됨)</span> : null}
+                                                <p className="text-right text-blue-400 font-bold text-[15px] mt-3 pr-3 animate-fade-in tracking-wide">
+                                                    ✓ 분석 반영 데이터: <span className="text-white">{itemCount}</span>개 {itemCount >= 500 ? <span className="text-orange-400 ml-1">(최대 한도 500개 적용됨)</span> : null}
                                                 </p>
                                             ) : null}
                                         </div>
                                         <div className="flex gap-3 mt-10">
                                             <input type="file" id="file-up" className="hidden" onChange={handleFileUpload} />
-                                            <label htmlFor="file-up" className="flex-1 bg-white/10 hover:bg-white/15 py-4 rounded-[1.2rem] text-center font-bold cursor-pointer transition-colors flex items-center justify-center whitespace-nowrap break-keep">파일 업로드</label>
-                                            <button onClick={() => handleStep1Analysis()} disabled={!rawData.trim()} className="flex-1 bg-blue-600 disabled:bg-slate-700 text-white rounded-[1.2rem] font-black py-4 whitespace-nowrap break-keep">분석 시작</button>
+                                            <label htmlFor="file-up" className="flex-1 bg-white/10 hover:bg-white/15 py-4 rounded-[1.2rem] text-center font-bold cursor-pointer transition-colors flex items-center justify-center">파일 업로드</label>
+                                            <button onClick={() => handleStep1Analysis()} disabled={!rawData.trim()} className="flex-1 bg-blue-600 disabled:bg-slate-700 text-white rounded-[1.2rem] font-black py-4">분석 시작</button>
                                         </div>
                                         <div className="mt-3">
                                             <input type="file" id="import-project" accept=".json" className="hidden" onChange={importProject} />
-                                            <label htmlFor="import-project" className="w-full bg-transparent border border-white/20 hover:bg-white/10 py-4 rounded-[1.2rem] text-center font-bold cursor-pointer transition-colors flex items-center justify-center text-white/80 whitespace-nowrap break-keep">기존 프로젝트 열기 (.json)</label>
+                                            <label htmlFor="import-project" className="w-full bg-transparent border border-white/20 hover:bg-white/10 py-4 rounded-[1.2rem] text-center font-bold cursor-pointer transition-colors flex items-center justify-center text-white/80">기존 프로젝트 열기 (.json)</label>
                                         </div>
                                     </div>
                                 </div>
@@ -641,21 +643,21 @@
                                 <StepTitle title={"전체 데이터 기반\n핵심 카테고리 분석"} desc="데이터에서 도출된 핵심 카테고리들을 확인하고 전반적인 동향을 파악해 주세요." />
                                 <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white mb-8 shadow-2xl relative overflow-hidden">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
-                                    <span className="bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px] whitespace-nowrap break-keep">EXECUTIVE SUMMARY</span>
-                                    <p className="text-[17px] font-light leading-[1.8] text-slate-200 text-justify whitespace-pre-line relative z-10 break-keep">"{step1Result.summary}"</p>
+                                    <span className="bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px]">EXECUTIVE SUMMARY</span>
+                                    <p className="text-[17px] font-light leading-[1.8] text-slate-200 text-justify whitespace-pre-line relative z-10">"{step1Result.summary}"</p>
                                 </div>
                                 <div className="space-y-5">
                                     {step1Result.categories.map((cat, i) => (
                                         <div key={i} className="bg-white p-7 rounded-[2rem] card-shadow border border-slate-100 flex flex-col transition-all hover:border-slate-300">
                                             <div className="flex justify-between items-start mb-5">
-                                                <h3 className="font-black text-slate-800 text-[20px] leading-tight pr-2 flex-1 break-keep">{cat.name}</h3>
+                                                <h3 className="font-black text-slate-800 text-[20px] leading-tight pr-2 flex-1">{cat.name}</h3>
                                             </div>
-                                            <p className="text-slate-600 font-light leading-relaxed whitespace-pre-line break-keep">{cat.summary}</p>
+                                            <p className="text-slate-600 font-light leading-relaxed whitespace-pre-line">{cat.summary}</p>
                                         </div>
                                     ))}
                                 </div>
                                 <div className="mt-8"><AIQuestionBox qaInput={qaInput} setQaInput={setQaInput} askAI={askAI} /></div>
-                                <div className="fixed bottom-0 left-0 right-0 p-5 glass-panel border-t max-w-[430px] mx-auto z-[60]"><button onClick={() => handleStep2Analysis()} className="w-full py-5 bg-slate-900 text-white rounded-[1.2rem] font-black text-lg active:scale-95 transition-all whitespace-nowrap break-keep">UX/디자인 심화 분석 이동</button></div>
+                                <div className="fixed bottom-0 left-0 right-0 p-5 glass-panel border-t max-w-[430px] mx-auto z-[60]"><button onClick={() => handleStep2Analysis()} className="w-full py-5 bg-slate-900 text-white rounded-[1.2rem] font-black text-lg active:scale-95 transition-all">UX/디자인 심화 분석 이동</button></div>
                             </div>
                         )}
 
@@ -664,26 +666,26 @@
                                 <StepTitle title={"UX/디자인 관점\n핵심 카테고리 도출"} desc="UX/디자인 관점의 핵심 이슈를 확인하고, 심층 분석할 대상을 하나 선택해 주세요." />
                                 <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white mb-8 shadow-2xl text-justify relative overflow-hidden">
                                     <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl"></div>
-                                    <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px] whitespace-nowrap break-keep">UX/DESIGN SUMMARY</span>
-                                    <p className="text-[17px] font-light leading-[1.8] text-slate-200 relative z-10 break-keep">"{step2Result.summary}"</p>
+                                    <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px]">UX/DESIGN SUMMARY</span>
+                                    <p className="text-[17px] font-light leading-[1.8] text-slate-200 relative z-10">"{step2Result.summary}"</p>
                                 </div>
                                 <div className="space-y-5 mb-12">
                                     {step2Result.uxCategories.map((cat, i) => (
                                         <div key={i} className={`p-7 rounded-[2.5rem] transition-all duration-300 card-shadow bg-white ${selectedCategory?.name === cat.name ? 'border-[3px] border-indigo-500 ring-4 ring-indigo-500/10' : 'border border-slate-100/60 hover:border-slate-300'}`}>
                                             <div className="flex justify-between items-start mb-5">
-                                                <h3 className="font-black text-20px flex-1 text-slate-800 leading-tight pr-2 break-keep">{cat.name}</h3>
+                                                <h3 className="font-black text-[20px] flex-1 text-slate-800 leading-tight pr-2">{cat.name}</h3>
                                                 <div className="flex flex-col items-end gap-2.5 shrink-0 ml-2">
-                                                    <button onClick={() => { setSelectedCategory(cat); setDeepDiveInput(`이슈: ${cat.name}\n내용: ${cat.summary}`); }} className={`px-6 py-2.5 rounded-xl font-black transition-all shadow-md active:scale-95 text-[15px] whitespace-nowrap break-keep ${selectedCategory?.name === cat.name ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-white'}`}>이슈 선택</button>
+                                                    <button onClick={() => { setSelectedCategory(cat); setDeepDiveInput(`이슈: ${cat.name}\n내용: ${cat.summary}`); }} className={`px-6 py-2.5 rounded-xl font-black transition-all shadow-md active:scale-95 text-[15px] ${selectedCategory?.name === cat.name ? 'bg-indigo-600 text-white' : 'bg-slate-900 text-white'}`}>이슈 선택</button>
                                                 </div>
                                             </div>
-                                            <p className="text-slate-600 text-[17px] font-light text-justify leading-relaxed whitespace-pre-line break-keep">{cat.summary}</p>
+                                            <p className="text-slate-600 text-[17px] font-light text-justify leading-relaxed whitespace-pre-line">{cat.summary}</p>
                                         </div>
                                     ))}
                                 </div>
                                 <div className="mt-8"><AIQuestionBox qaInput={qaInput} setQaInput={setQaInput} askAI={askAI} /></div>
                                 <div className="fixed bottom-0 left-0 right-0 p-6 glass-panel border-t max-w-[430px] mx-auto z-[60] shadow-2xl">
-                                    <div className="mb-4 text-center text-slate-600 text-[15px] font-bold break-keep">{selectedCategory ? `"${selectedCategory.name}" 선택됨` : "항목을 선택하세요"}</div>
-                                    <button disabled={!selectedCategory} onClick={() => start5WhysAnalysis()} className="w-full py-5 bg-orange-500 text-white rounded-[1.2rem] font-black text-lg active:scale-95 transition-all shadow-xl shadow-orange-500/30 disabled:bg-slate-200 disabled:shadow-none whitespace-nowrap break-keep">5Whys 분석 시작</button>
+                                    <div className="mb-4 text-center text-slate-600 text-[15px] font-bold">{selectedCategory ? `"${selectedCategory.name}" 선택됨` : "항목을 선택하세요"}</div>
+                                    <button disabled={!selectedCategory} onClick={() => start5WhysAnalysis()} className="w-full py-5 bg-orange-500 text-white rounded-[1.2rem] font-black text-lg active:scale-95 transition-all shadow-xl shadow-orange-500/30 disabled:bg-slate-200 disabled:shadow-none">5Whys 분석 시작</button>
                                 </div>
                             </div>
                         )}
@@ -695,20 +697,20 @@
                                     {rootCauses.map((rc) => (
                                         <div key={rc.id} className={`p-7 rounded-[2rem] transition-all duration-300 card-shadow bg-white ${selectedCauseId === rc.id ? 'border-[3px] border-orange-500 ring-4 ring-orange-500/10' : 'border border-slate-100/60 hover:border-slate-300'}`}>
                                             <div className="flex justify-between items-center mb-6">
-                                                <span className="bg-orange-50 text-orange-600 px-4 py-1.5 rounded-full font-bold text-[14px] whitespace-nowrap break-keep">Case {rc.id}</span>
-                                                <button onClick={() => setSelectedCauseId(rc.id)} className={`px-6 py-2 rounded-xl font-black shadow-md active:scale-95 text-[15px] whitespace-nowrap break-keep shrink-0 ml-2 ${selectedCauseId === rc.id ? 'bg-orange-500 text-white' : 'bg-slate-900 text-white'}`}>원인 선택</button>
+                                                <span className="bg-orange-50 text-orange-600 px-4 py-1.5 rounded-full font-bold text-[14px]">Case {rc.id}</span>
+                                                <button onClick={() => setSelectedCauseId(rc.id)} className={`px-6 py-2 rounded-xl font-black shadow-md active:scale-95 text-[15px] ${selectedCauseId === rc.id ? 'bg-orange-500 text-white' : 'bg-slate-900 text-white'}`}>원인 선택</button>
                                             </div>
                                             <div className="space-y-4 mb-8 text-slate-700 text-justify">
                                                 {rc.chain?.map((cStep, idx) => {
                                                     const lines = cStep.split(/\\n|₩n|\n/);
                                                     return (
-                                                        <div key={idx} className="mb-4 break-keep">
+                                                        <div key={idx} className="mb-4">
                                                             {lines.map((line, lidx) => (<span key={lidx} className={lidx === 0 ? 'font-black text-slate-900 block text-[17px] mb-1' : 'block font-normal text-slate-600 leading-relaxed text-[16px]'}>{line}</span>))}
                                                         </div>
                                                     );
                                                 })}
                                             </div>
-                                            <div className="pt-6 border-t border-slate-100"><div className="inline-block bg-orange-100 text-orange-600 px-3 py-1 rounded-md text-[12px] font-black mb-3 uppercase whitespace-nowrap break-keep">Real Cause</div><p className="text-[18px] font-bold text-slate-800 leading-relaxed break-keep">{rc.realCause}</p></div>
+                                            <div className="pt-6 border-t border-slate-100"><div className="inline-block bg-orange-100 text-orange-600 px-3 py-1 rounded-md text-[12px] font-black mb-3 uppercase">Real Cause</div><p className="text-[18px] font-bold text-slate-800 leading-relaxed">{rc.realCause}</p></div>
                                         </div>
                                     ))}
                                 </div>
@@ -716,10 +718,10 @@
                                 <div className="fixed bottom-0 left-0 right-0 p-6 glass-panel max-w-[430px] mx-auto z-40 border-t shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
                                     <div className="grid grid-cols-2 gap-2 mb-16">
                                         {['사용 불편 관점', '기술 진화 관점', '심미적 관점', '비지니스 관점'].map(p => (
-                                            <button key={p} onClick={() => changePerspective(p)} className={`py-3 rounded-xl text-[14px] font-bold border transition-all active:scale-95 whitespace-nowrap break-keep ${perspective === p ? 'bg-orange-50 border-orange-400 text-orange-600 shadow-sm' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}>{p}</button>
+                                            <button key={p} onClick={() => changePerspective(p)} className={`py-3 rounded-xl text-[14px] font-bold border transition-all active:scale-95 ${perspective === p ? 'bg-orange-50 border-orange-400 text-orange-600 shadow-sm' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}>{p}</button>
                                         ))}
                                     </div>
-                                    <button onClick={() => exploreDeepHypotheses(selectedCauseId)} disabled={selectedCauseId === null} className="w-full py-5 rounded-[1.2rem] font-black bg-slate-900 text-white shadow-xl active:scale-95 transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none whitespace-nowrap break-keep">디자인 인사이트 도출</button>
+                                    <button onClick={() => exploreDeepHypotheses(selectedCauseId)} disabled={selectedCauseId === null} className="w-full py-5 rounded-[1.2rem] font-black bg-slate-900 text-white shadow-xl active:scale-95 transition-all disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none">디자인 인사이트 도출</button>
                                 </div>
                             </div>
                         )}
@@ -731,20 +733,20 @@
                                     {deepHypotheses.map((h, hIdx) => (
                                         <div key={hIdx} className="p-8 rounded-[2.5rem] transition-all duration-300 card-shadow bg-white border border-slate-100/60 hover:border-slate-300">
                                             <div className="flex flex-col mb-6 border-b border-slate-100 pb-5">
-                                                <h3 className="text-[22px] font-black text-slate-900 leading-snug break-keep">{h.title}</h3>
+                                                <h3 className="text-[22px] font-black text-slate-900 leading-snug">{h.title}</h3>
                                             </div>
                                             <div className="space-y-8">
                                                 {[{t:'Step 1. VOC 기반 이슈', c:h.step1}, {t:'Step 2. 디자인 솔루션 제안', c:h.step2}, {t:'Step 3. 사용자 가치 및 기대 효과', c:h.step3}].map((item, idx) => (
                                                     <div key={idx} className="relative">
                                                         <div className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full bg-orange-400"></div>
-                                                        <p className="text-[17px] font-bold text-slate-800 mb-2 pl-4 tracking-wide break-keep">{item.t}</p>
-                                                        <p className="text-[17px] text-slate-600 font-light text-justify leading-relaxed whitespace-pre-line pl-4 break-keep">{item.c}</p>
+                                                        <p className="text-[17px] font-bold text-slate-800 mb-2 pl-4 tracking-wide">{item.t}</p>
+                                                        <p className="text-[17px] text-slate-600 font-light text-justify leading-relaxed whitespace-pre-line pl-4">{item.c}</p>
                                                     </div>
                                                 ))}
                                                 {h.step4 && (
                                                     <div className="bg-slate-900 p-8 rounded-[2rem] shadow-xl mt-8 relative overflow-hidden">
-                                                        <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px] whitespace-nowrap break-keep">전략적 해결 방안</span>
-                                                        <p className="text-[17px] font-light leading-[1.8] text-slate-200 text-justify whitespace-pre-line relative z-10 break-keep">{h.step4}</p>
+                                                        <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px]">전략적 해결 방안</span>
+                                                        <p className="text-[17px] font-light leading-[1.8] text-slate-200 text-justify whitespace-pre-line relative z-10">{h.step4}</p>
                                                     </div>
                                                 )}
                                             </div>
@@ -759,13 +761,13 @@
                                             <button
                                                 key={p}
                                                 onClick={() => changePerspectiveInStep6(p)}
-                                                className={`py-3 rounded-xl font-bold border transition-all text-[14px] active:scale-95 whitespace-nowrap break-keep ${perspective === p ? 'bg-orange-50 border-orange-400 text-orange-600 shadow-sm' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}
+                                                className={`py-3 rounded-xl font-bold border transition-all text-[14px] active:scale-95 ${perspective === p ? 'bg-orange-50 border-orange-400 text-orange-600 shadow-sm' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}
                                             >
                                                 {p}
                                             </button>
                                         ))}
                                     </div>
-                                    <button onClick={copyAccumulatedContent} className="w-full py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-[1.2rem] font-black text-[17px] shadow-xl shadow-blue-600/30 active:scale-95 transition-all whitespace-nowrap break-keep">전체 리포트 복사하기</button>
+                                    <button onClick={copyAccumulatedContent} className="w-full py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-[1.2rem] font-black text-[17px] shadow-xl shadow-blue-600/30 active:scale-95 transition-all">전체 리포트 복사하기</button>
                                 </div>
                             </div>
                         )}
