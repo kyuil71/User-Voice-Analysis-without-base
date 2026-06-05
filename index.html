@@ -579,7 +579,7 @@
                                     <p className="text-slate-500 font-bold text-[16px]">사용자 리뷰 데이터 분석 자동화 도구</p>
                                 </div>
                                 <div className="w-full bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-6">
-                                    <div className="w-full text-center mb-2">
+                                    <div>
                                         <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-blue-600 font-bold text-[15px] hover:text-blue-700 transition-colors">API Key 발급받기</a>
                                     </div>
                                     <input type="password" id="api-key-input" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-center outline-none focus:border-blue-400 transition-colors text-[15px] font-medium text-slate-700 placeholder:text-slate-400" placeholder="Gemini API Key 입력" />
@@ -622,7 +622,7 @@
 
                         {step === 2 && step1Result && (
                             <div className="pt-8 px-5 pb-32 animate-fade-in">
-                                <StepTitle title={"전체 데이터 기반\n핵심 카테고 분석"} desc="데이터에서 도출된 핵심 카테고리들을 확인하고 전반적인 동향을 파악해 주세요." />
+                                <StepTitle title={"전체 데이터 기반\n핵심 카테고리 분석"} desc="데이터에서 도출된 핵심 카테고리들을 확인하고 전반적인 동향을 파악해 주세요." />
                                 <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white mb-8 shadow-2xl relative overflow-hidden">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
                                     <span className="bg-blue-600/20 text-blue-300 border border-blue-500/30 px-4 py-1.5 rounded-full font-black uppercase mb-5 inline-block text-[13px]">EXECUTIVE SUMMARY</span>
@@ -698,7 +698,7 @@
                                 </div>
                                 <div className="mt-8"><AIQuestionBox qaInput={qaInput} setQaInput={setQaInput} askAI={askAI} /></div>
                                 <div className="fixed bottom-0 left-0 right-0 p-6 glass-panel max-w-[430px] mx-auto z-40 border-t shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
+                                    <div className="grid grid-cols-2 gap-2 mb-16">
                                         {['사용 불편 관점', '기술 진화 관점', '심미적 관점', '비지니스 관점'].map(p => (
                                             <button key={p} onClick={() => changePerspective(p)} className={`py-3 rounded-xl text-[14px] font-bold border transition-all active:scale-95 ${perspective === p ? 'bg-orange-50 border-orange-400 text-orange-600 shadow-sm' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'}`}>{p}</button>
                                         ))}
@@ -737,7 +737,7 @@
                                 </div>
                                 <div className="mt-8"><AIQuestionBox qaInput={qaInput} setQaInput={setQaInput} askAI={askAI} /></div>
                                 <div className="fixed bottom-0 left-0 right-0 p-6 glass-panel border-t border-slate-200/50 max-w-[430px] mx-auto z-40 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
+                                    <div className="grid grid-cols-2 gap-2 mb-16">
                                         {['사용 불편 관점', '기술 진화 관점', '심미적 관점', '비지니스 관점'].map(p => (
                                             <button
                                                 key={p}
